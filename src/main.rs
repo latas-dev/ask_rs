@@ -1,6 +1,9 @@
-use std::time::Duration;
-use ask_rs::WaveTableOscillator;
-use rodio::{OutputStream, Source};
+use ask_rs::{WaveTableOscillator, play_scale};
+
+// A minor scale = section of A major
+const A_AEOLIAN: [f32; 8] = [440.0, 493.9, 523.3, 587.3, 659.3, 698.5, 766.0, 880.0];
+// C major scale
+const C_IONIAN: [f32; 8] = [261.6, 293.7, 329.6, 349.2, 392.0, 440.0, 493.9, 523.3];
 
 fn main() {
     let wave_table_length = 64;
@@ -12,12 +15,7 @@ fn main() {
             / wave_table_length as f32).sin());
     }
 
-    let mut oscillator = WaveTableOscillator::new(44100, wave_table);
-    oscillator.set_frequency(440.0); // TODO: MAKE VARIABLE FREQUENCY
-
-    
-    // SHOULDN'T BE HERE BUT IT NEEDS TO
-    let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-    let _result = stream_handle.play_raw(oscillator.convert_samples());
-    std::thread::sleep(Duration::from_secs(5))
+    let mut oscillator =WaveTableOscillator::new(44100, wave_table);
+    play_scale(&mut oscillator, A_AEOLIAN);
+    play_scale(&mut oscillator, C_IONIAN);
 }
