@@ -1,11 +1,17 @@
 use ask_rs::{WaveTableOscillator, play_scale};
+mod  gui_config;
+use gui_config::MyEguiApp;
 
-// A minor scale = section of A major
+// A minor scale = section of C major
 const A_AEOLIAN: [f32; 8] = [440.0, 493.9, 523.3, 587.3, 659.3, 698.5, 766.0, 880.0];
 // C major scale
 const C_IONIAN: [f32; 8] = [261.6, 293.7, 329.6, 349.2, 392.0, 440.0, 493.9, 523.3];
 
 fn main() {
+    // GUI
+    let native_options = eframe::NativeOptions::default();
+    eframe::run_native("ASK", native_options, Box::new(|cc| Box::new(MyEguiApp::new(cc))));
+
     let wave_table_length = 64;
     let mut wave_table: Vec<f32> = Vec::with_capacity(wave_table_length);
 
